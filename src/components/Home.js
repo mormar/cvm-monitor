@@ -2,10 +2,29 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { black } from "../utilities";
+import { Input } from "../elements";
 
 const Main = styled.div`
   max-width: 1200px;
   margin: 0 auto;
+  min-height: calc(100vh - 114px);
+  .repository-name {
+    color: ${black}
+    font-size: 1.25em;
+    line-height: 1.25em;
+    text-decoration: none;
+  }
+  .list {
+    margin: 20px 0px;
+  }
+`;
+
+const Title = styled.div`
+  padding: 20px 0px;
+  color: ${black};
+  font-size: 2.75em;
+  font-weight: 500;
 `;
 
 const initialState = {
@@ -37,19 +56,25 @@ const Home = () => {
     findRepository.map(repositorie => {
       return (
         <div key={repositorie.id}>
-          <Link to={"/" + repositorie.url}>{repositorie.name}</Link>
+          <Link className="repository-name" to={"/" + repositorie.url}>
+            {repositorie.name}
+          </Link>
         </div>
       );
     })
   ) : (
-    <div>Invalid name of repositorie</div>
+    <div className="repository-name">Invalid name of repositorie</div>
   );
 
   return (
     <Main>
-      <h1>Registered Stratum 0 Repositories</h1>
-      <input onChange={e => setSearch(e.target.value)} value={search} />
-      {repositoriesList}
+      <Title>Registered Stratum 0 Repositories</Title>
+      <Input
+        onChange={e => setSearch(e.target.value)}
+        value={search}
+        placeholder="search"
+      />
+      <div className="list">{repositoriesList}</div>
     </Main>
   );
 };
