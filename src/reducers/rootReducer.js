@@ -197,10 +197,21 @@ const initState = {
       url: "lhcb-condb.cern.ch"
     },
     { id: 81, name: "LSST Software (sw.lsst.eu)", url: "sw.lsst.eu" }
-  ]
+  ],
+  repository: []
 };
 
 const rootReducer = (state = initState, action) => {
+  console.log(action);
+  if (action.type === "GET_REPOSITORY") {
+    let clickedRepository = state.repositories.filter(repository => {
+      return action.id === repository.id;
+    });
+    return {
+      ...state,
+      repository: clickedRepository
+    };
+  }
   return state;
 };
 
