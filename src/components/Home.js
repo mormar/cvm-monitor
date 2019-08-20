@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { Component } from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { black } from "../utilities";
 import { Input } from "../elements";
+import { connect } from "react-redux";
+import { getRepository } from "../actions/getRepository";
 
 const Main = styled.div`
   max-width: 1200px;
@@ -27,56 +28,75 @@ const Title = styled.div`
   font-weight: 500;
 `;
 
-const initialState = {
-  search: ""
-};
+class Home extends Component {
+  state = { search: "" };
 
-const Home = () => {
-  const { repositories } = useSelector(state => ({
-    repositories: state.repositories
-  }));
+  handleChange = (event) => {
+    this.setState({ search: event.target.value });
+  }
 
-  const alphabetiseRepositories = [...repositories].sort(function(a, b) {
-    if (a.name.toLowerCase() < b.name.toLowerCase()) {
-      return -1;
-    }
-    if (a.name.toLowerCase() > b.name.toLowerCase()) {
-      return 1;
-    }
-    return 0;
-  });
+  render() {
+    console.log(this.props);
+    const { repositories} = this.props;
+    const { search } = this.state;
 
-  const [search, setSearch] = useState(initialState.search);
+    const alphabetiseRepositories = [...repositories].sort(function(a, b) {
+      if (a.name.toLowerCase() < b.name.toLowerCase()) {
+        return -1;
+      }
+      if (a.name.toLowerCase() > b.name.toLowerCase()) {
+        return 1;
+      }
+      return 0;
+    });
 
-  const findRepository = alphabetiseRepositories.filter(repositorie => {
-    return repositorie.name.toLowerCase().indexOf(search.toLowerCase()) !== -1;
-  });
-
-  const repositoriesList = findRepository.length ? (
-    findRepository.map(repositorie => {
+    const findRepository = alphabetiseRepositories.filter(repository => {
       return (
-        <div key={repositorie.id}>
-          <Link className="repository-name" to={"/" + repositorie.url}>
-            {repositorie.name}
-          </Link>
-        </div>
+        repository.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
       );
-    })
-  ) : (
-    <div className="repository-name">Invalid name of repositorie</div>
-  );
+    });
 
-  return (
-    <Main>
-      <Title>Registered Stratum 0 Repositories</Title>
-      <Input
-        onChange={e => setSearch(e.target.value)}
-        value={search}
-        placeholder="search"
-      />
-      <div className="list">{repositoriesList}</div>
-    </Main>
-  );
+    const repositoriesList = findRepository.length ? (
+      findRepository.map(repository => {
+        return (
+          <div key={repository.id}>
+            <Link
+              className="repository-name"
+              to={"/" + repository.url}
+            >
+              {repository.name}
+            </Link>
+          </div>
+        );
+      })
+    ) : (
+      <div className="repository-name">Invalid name of repository</div>
+    );
+
+    return (
+      <Main>
+        <Title>Registered Stratum 0 Repositories</Title>
+        <Input
+          onChange={this.handleChange}
+          value={search}
+          placeholder="search"
+        />
+        <div className="list">{repositoriesList}</div>
+      </Main>
+    );
+  }
+}
+
+const mapStateToProps = (state) => {
+    return {
+        repositories: state.repositories,
+    }
 };
 
-export default Home;
+const mapDispatchToProps = (dispatch) => {
+  return {
+      getRepository: (id) => { dispatch(getRepository(id))}
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
