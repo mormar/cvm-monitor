@@ -70,12 +70,12 @@ class Home extends Component {
         );
       })
     ) : (
-      <div className="repository-name">Invalid name of repository</div>
+      <div className="repository-name">Unknown repository</div>
     );
 
     return (
       <Main>
-        <Title>Registered Stratum 0 Repositories</Title>
+        <Title>Registered Repositories</Title>
         <Input
           onChange={this.handleChange}
           value={search}
