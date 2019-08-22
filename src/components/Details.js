@@ -1,40 +1,58 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import test from "../test.json";
-import { black, gray } from "../utilities";
+import {
+  black,
+  shipGrey,
+  athensGrey,
+  grey,
+  gravel,
+  roboto,
+  green,
+  red,
+  brown
+} from "../utilities";
 import { getRepository } from "../actions/getRepository";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
+import { faTimes, faCheck, faMinus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
 
 const Box = styled.div`
   max-width: 1200px;
   margin: 0 auto;
 
   table {
-    border-collapse: collapse;
     margin: 20px 0px;
     width: 100%;
+    border-spacing: 0;
+    border-radius: 20px;
+    overflow: hidden;
   }
   th,
   td {
     text-align: left;
-    border: 1px solid black;
+    border-bottom: 1px solid ${gravel};
     padding: 0.25rem;
+    background: ${grey};
+    ${roboto};
+    padding: 10px 15px;
   }
   tr td:first-child {
     width: 300px;
   }
-  tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
   .table-title {
     font-size: 1.25em;
-    font-weight: 500;
-    background: ${gray};
-    color: #fff;
+    font-weight: 600;
+    background: ${shipGrey};
+    color: ${athensGrey};
+    ${roboto};
+    padding: 10px 15px;
   }
   .table-subtitle {
     font-size: 1em;
-    font-weight: 500;
+    font-weight: 600;
+    ${roboto};
+    background: ${athensGrey};
   }
 `;
 
@@ -43,199 +61,153 @@ const Title = styled.div`
   color: ${black};
   font-size: 2.75em;
   font-weight: 500;
+  ${roboto};
 `;
 
 class Details extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      repositoryData: null,
+      isLoading: false,
+      error: null
+    };
+  }
+
+  componentDidMount() {
+    this.setState({ isLoading: true });
+    axios
+      .get("api/")
+      .then(result =>
+        this.setState({ repositoryData: result.data, isLoading: false })
+      )
+      .catch(error => this.setState({ error, isLoading: false }));
+  }
+
   handleClick = () => {
     this.props.getRepository(this.props.getRepository.id);
   };
 
   render() {
-    console.log(this.props);
+    // console.log(this.props);
     const { repository } = this.props;
-    return (
-      <Box>
-        <Title>{repository.name}</Title>
-        <table>
-          <thead>
-            <tr>
-              <th className="table-title" colSpan="2">
-                Project Information
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Website</td>
-              <td>http://www.cern.ch/atlas</td>
-            </tr>
-            <tr>
-              <td>Description</td>
-              <td>{test.description}</td>
-            </tr>
-            <tr>
-              <td>Browse</td>
-              <td>http://www.cern.ch/atlas</td>
-            </tr>
-          </tbody>
-        </table>
+    const { repositoryData, error } = this.state;
 
-        <table>
-          <thead>
-            <tr>
-              <th className="table-title" colSpan="2">
-                Stratum 0
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Stratum0 Revision</td>
-              <td>53059</td>
-            </tr>
-            <tr>
-              <td>Oldest Stratum1 Revision</td>
-              <td>53057</td>
-            </tr>
-            <tr>
-              <td>Last Modified</td>
-              <td>19.08.2019 13:02:15</td>
-            </tr>
-            <tr>
-              <td>Whitelist Expiry Date</td>
-              <td>27.09.2019 12:03:01 (38 days left)</td>
-            </tr>
-            <tr>
-              <td>Root Catalog Hash</td>
-              <td>349c92626c570a4080211d3dcf08e54d48e6fed8</td>
-            </tr>
-            <tr>
-              <td>Number of known Stratum 1 Replicas</td>
-              <td>5</td>
-            </tr>
-          </tbody>
-        </table>
+    if (error) {
+      return <p>{error.message}</p>;
+    }
 
-        <table>
-          <thead>
-            <tr>
-              <th className="table-title" colSpan="2">
-                Stratum 1
-              </th>
-            </tr>
-          </thead>
-          <thead>
-            <tr>
-              <th className="table-subtitle" colSpan="2">
-                DESY Replica
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Revision</td>
-              <td>53059 (Last Replication: 19.08.2019 13:30:39)</td>
-            </tr>
-            <tr>
-              <td>URL</td>
-              <td>http://grid-cvmfs-one.desy.de:8000/cvmfs/atlas.cern.ch</td>
-            </tr>
-            <tr>
-              <td>Status</td>
-              <td />
-            </tr>
-          </tbody>
+    if (this.state.repositoryData === null) {
+      return <p>Loading ...</p>;
+    } else {
+      return (
+        <Box>
+          <Title>{repository.name}</Title>
+          <table>
+            <thead>
+              <tr>
+                <th className="table-title" colSpan="2">
+                  Stratum 0
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Revision</td>
+                {repositoryData.recommendedStratum0.hasOwnProperty(
+                  "revision"
+                ) ? (
+                  <td>{repositoryData.recommendedStratum0.revision}</td>
+                ) : (
+                  <td>lack of data</td>
+                )}
+              </tr>
+              <tr>
+                <td>Oldest Stratum1 Revision</td>
+                {repositoryData.hasOwnProperty("oldestRevision") ? (
+                  <td>{repositoryData.oldestRevision}</td>
+                ) : (
+                  <td>lack of data</td>
+                )}
+              </tr>
+              <tr>
+                <td>Last Modified</td>
+                {repositoryData.hasOwnProperty("lastModified") ? (
+                  <td>{repositoryData.lastModified}</td>
+                ) : (
+                  <td>lack of data</td>
+                )}
+              </tr>
+              <tr>
+                <td>Whitelist Expiry Date</td>
+                {repositoryData.hasOwnProperty("whitelistExpiryDate") ? (
+                  <td>{repositoryData.whitelistExpiryDate}</td>
+                ) : (
+                  <td>lack of data</td>
+                )}
+              </tr>
+            </tbody>
+          </table>
 
-          <thead>
-            <tr>
-              <th className="table-subtitle" colSpan="2">
-                BNL Replica
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Revision</td>
-              <td>53059 (Last Replication: 19.08.2019 13:42:41)</td>
-            </tr>
-            <tr>
-              <td>URL</td>
-              <td>http://grid-cvmfs-one.desy.de:8000/cvmfs/atlas.cern.ch</td>
-            </tr>
-            <tr>
-              <td>Status</td>
-              <td />
-            </tr>
-          </tbody>
-
-          <thead>
-            <tr>
-              <th className="table-subtitle" colSpan="2">
-                Fermilab Replica
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Revision</td>
-              <td>53059 (Last Replication: 19.08.2019 13:42:04)</td>
-            </tr>
-            <tr>
-              <td>URL</td>
-              <td>http://cvmfs.fnal.gov/cvmfs/atlas.cern.ch </td>
-            </tr>
-            <tr>
-              <td>Status</td>
-              <td />
-            </tr>
-          </tbody>
-
-          <thead>
-            <tr>
-              <th className="table-subtitle" colSpan="2">
-                RAL Replica
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Revision</td>
-              <td>53059 (Last Replication: 19.08.2019 13:40:07)</td>
-            </tr>
-            <tr>
-              <td>URL</td>
-              <td>http://cernvmfs.gridpp.rl.ac.uk/cvmfs/atlas.cern.ch </td>
-            </tr>
-            <tr>
-              <td>Status</td>
-              <td />
-            </tr>
-          </tbody>
-
-          <thead>
-            <tr>
-              <th className="table-subtitle" colSpan="2">
-                CERN Replica
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Revision</td>
-              <td>53059 (Last Replication: 19.08.2019 13:44:02)</td>
-            </tr>
-            <tr>
-              <td>URL</td>
-              <td>http://cvmfs-stratum-one.cern.ch/cvmfs/atlas.cern.ch</td>
-            </tr>
-            <tr>
-              <td>Status</td>
-              <td />
-            </tr>
-          </tbody>
-        </table>
-      </Box>
-    );
+          {repositoryData.recommendedStratum1.map(stratumOne => (
+            <table>
+              <thead>
+                <tr>
+                  <th className="table-title" colSpan="2">
+                    Stratum 1
+                  </th>
+                </tr>
+              </thead>
+              <thead>
+                <tr>
+                  <th className="table-subtitle" colSpan="2">
+                    {stratumOne.hasOwnProperty("name")
+                      ? stratumOne.name
+                      : "lack of data"}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Revision</td>
+                  <td>
+                    {stratumOne.hasOwnProperty("revision")
+                      ? stratumOne.revision
+                      : "lack of data"}
+                  </td>
+                </tr>
+                <tr>
+                  <td>URL</td>
+                  <td>
+                    {stratumOne.hasOwnProperty("url")
+                      ? stratumOne.url
+                      : "lack of data"}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Status</td>
+                  <td>
+                    {stratumOne.health === "green" ? (
+                      <FontAwesomeIcon
+                        icon={faCheck}
+                        style={{ color: green }}
+                      />
+                    ) : stratumOne.health === "red" ? (
+                      <FontAwesomeIcon icon={faTimes} style={{ color: red }} />
+                    ) : (
+                      <FontAwesomeIcon
+                        icon={faMinus}
+                        style={{ color: brown }}
+                      />
+                    )}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          ))}
+        </Box>
+      );
+    }
   }
 }
 
@@ -243,13 +215,18 @@ const mapStateToProps = (state, ownProps) => {
   let id = ownProps.match.params.repository_name;
   return {
     repository: state.repositories.find(repository => repository.url === id)
-  }
-}
+  };
+};
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-      deletePost: (id) => { dispatch(getRepository(id))}
-  }
-}
+    getRepository: id => {
+      dispatch(getRepository(id));
+    }
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Details) 
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Details);
