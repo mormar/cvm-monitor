@@ -16,6 +16,7 @@ import { connect } from "react-redux";
 import { faTimes, faCheck, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
+import moment from "moment";
 
 const Box = styled.div`
   max-width: 1200px;
@@ -124,16 +125,24 @@ class Details extends Component {
               </tr>
               <tr>
                 <td>Oldest Stratum1 Revision</td>
-                {repositoryData.hasOwnProperty("oldestRevision") ? (
-                  <td>{repositoryData.oldestRevision}</td>
+                {repositoryData.hasOwnProperty("oldestRevisionStratumOne") ? (
+                  <td>{repositoryData.oldestRevisionStratumOne}</td>
                 ) : (
                   <td>lack of data</td>
                 )}
               </tr>
               <tr>
                 <td>Last Modified</td>
-                {repositoryData.hasOwnProperty("lastModified") ? (
-                  <td>{repositoryData.lastModified}</td>
+                {repositoryData.recommendedStratum0.hasOwnProperty(
+                  "publishedTimestamp"
+                ) ? (
+                  <td>
+                    {moment
+                      .unix(
+                        repositoryData.recommendedStratum0.publishedTimestamp
+                      )
+                      .format("Do MMMM YYYY h:mm:ss a")}
+                  </td>
                 ) : (
                   <td>lack of data</td>
                 )}
@@ -149,8 +158,8 @@ class Details extends Component {
             </tbody>
           </table>
 
-          {repositoryData.recommendedStratum1.map(stratumOne => (
-            <table>
+          {repositoryData.recommendedStratum1s.map(stratumOne => (
+            <table key={stratumOne.id}>
               <thead>
                 <tr>
                   <th className="table-title" colSpan="2">
@@ -173,6 +182,11 @@ class Details extends Component {
                   <td>
                     {stratumOne.hasOwnProperty("revision")
                       ? stratumOne.revision
+                      : "lack of data"}{" "}
+                    {stratumOne.hasOwnProperty("publishedTimestamp")
+                      ? moment
+                          .unix(stratumOne.publishedTimestamp)
+                          .format("Do MMMM YYYY h:mm:ss a")
                       : "lack of data"}
                   </td>
                 </tr>
