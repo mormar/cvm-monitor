@@ -1,10 +1,9 @@
 import styled from "styled-components";
 import { applyStyleModifiers } from "styled-components-modifiers";
-import { shadows, roboto, white, shipGrey } from "../utilities";
+import { shadows, white, shipGrey } from "../utilities";
 
 const BUTTON_MODIFIERS = {
   more: () => `
-    ${roboto};
     font-weight: 600;
     border-radius: 10px;
     `

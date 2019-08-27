@@ -9,11 +9,19 @@ import {
   roboto,
   green,
   red,
-  brown
+  brown,
+  above,
+  white
 } from "../utilities";
 import { getRepository } from "../actions/getRepository";
 import { connect } from "react-redux";
-import { faTimes, faCheck, faMinus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faTimes,
+  faCheck,
+  faMinus,
+  faAngleDown,
+  faAngleUp
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import moment from "moment";
@@ -21,14 +29,21 @@ import { Button } from "../elements";
 
 const Box = styled.div`
   max-width: 1200px;
-  margin: 0 auto;
+  min-height: calc(100vh - 94px);
+  margin: 0px 10px;
+  ${above.desktop`
+    margin: 0 auto;
+  `}
 
   table {
     margin: 20px 0px;
     width: 100%;
     border-spacing: 0;
-    border-radius: 20px;
     overflow: hidden;
+    border-radius: 10px;
+    ${above.phone`
+      border-radius: 20px;
+    `}
   }
   th,
   td {
@@ -37,10 +52,21 @@ const Box = styled.div`
     padding: 0.25rem;
     background: ${grey};
     ${roboto};
-    padding: 10px 15px;
+    padding: 10px 5px;
+    font-size: 0.75em;
+    ${above.phone`
+      padding: 10px 15px;
+      font-size: 1em;
+    `}
   }
   tr td:first-child {
-    width: 300px;
+    width: 125px;
+    ${above.phone`
+      width: 150px;
+    `};
+    ${above.tablet`
+      width: 300px;
+    `}
   }
   .table-title {
     font-size: 1.25em;
@@ -59,11 +85,15 @@ const Box = styled.div`
     align-items: center;
   }
   .grid {
-    display: flex;
-    flex-wrap: wrap;
+    ${above.tablet`
+      display: flex;
+      flex-wrap: wrap;
+    `}
   }
-  .card:nth-child(odd){
-    margin-right: 10px;
+  .card:nth-child(odd) {
+    ${above.tablet`
+      margin-right: 10px;
+    `}
   }
   .card-title {
     font-size: 1em;
@@ -80,7 +110,10 @@ const Box = styled.div`
     flex: 1 1 auto;
   }
   .img {
-    padding: 2em;
+    padding: 1.5em;
+    ${above.tablet`
+      padding: 2em;
+    `}
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
   }
@@ -93,6 +126,10 @@ const Box = styled.div`
   }
   .details {
     padding: 10px 0px;
+    font-size: 0.75em;
+    ${above.phone`
+      font-size: 1em;
+    `}
     &.revision {
       font-weight: 600;
     }
@@ -105,9 +142,12 @@ const Box = styled.div`
 const Title = styled.div`
   padding-top: 20px;
   color: ${black};
-  font-size: 2.75em;
+  font-size: 2em;
   font-weight: 500;
   ${roboto};
+  ${above.phone`
+    font-size: 2.75em;
+  `}
 `;
 
 const Subtitle = styled.div`
@@ -213,7 +253,18 @@ class Details extends Component {
                   <td className="two-tab-elem">
                     {repositoryData.whitelistExpiryDate}
                     <Button modifiers={["more"]} onClick={this.handleClick}>
-                      {details ? "Less details" : "More details"}
+                      {/* {details ? "Less details" : "More details"} */}
+                      {details ? (
+                        <FontAwesomeIcon
+                          icon={faAngleUp}
+                          style={{ color: white }}
+                        />
+                      ) : (
+                        <FontAwesomeIcon
+                          icon={faAngleDown}
+                          style={{ color: white }}
+                        />
+                      )}
                     </Button>
                   </td>
                 ) : (

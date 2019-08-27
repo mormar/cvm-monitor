@@ -1,15 +1,18 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { black } from "../utilities";
+import { black, above } from "../utilities";
 import { Input } from "../elements";
 import { connect } from "react-redux";
 import { getRepository } from "../actions/getRepository";
 
 const Main = styled.div`
   max-width: 1200px;
-  margin: 0 auto;
   min-height: calc(100vh - 114px);
+  margin: 0px 10px;
+  ${above.desktop`
+    margin: 0 auto;
+  `}
   .repository-name {
     color: ${black}
     font-size: 1.25em;
@@ -24,20 +27,23 @@ const Main = styled.div`
 const Title = styled.div`
   padding: 20px 0px;
   color: ${black};
-  font-size: 2.75em;
+  font-size: 2em;
   font-weight: 500;
+  ${above.phone`
+    font-size: 2.75em;
+  `}
 `;
 
 class Home extends Component {
   state = { search: "" };
 
-  handleChange = (event) => {
+  handleChange = event => {
     this.setState({ search: event.target.value });
-  }
+  };
 
   render() {
     console.log(this.props);
-    const { repositories} = this.props;
+    const { repositories } = this.props;
     const { search } = this.state;
 
     const alphabetiseRepositories = [...repositories].sort(function(a, b) {
@@ -51,19 +57,14 @@ class Home extends Component {
     });
 
     const findRepository = alphabetiseRepositories.filter(repository => {
-      return (
-        repository.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
-      );
+      return repository.name.toLowerCase().indexOf(search.toLowerCase()) !== -1;
     });
 
     const repositoriesList = findRepository.length ? (
       findRepository.map(repository => {
         return (
           <div key={repository.id}>
-            <Link
-              className="repository-name"
-              to={"/" + repository.url}
-            >
+            <Link className="repository-name" to={"/" + repository.url}>
               {repository.name}
             </Link>
           </div>
@@ -87,16 +88,21 @@ class Home extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        repositories: state.repositories,
-    }
+const mapStateToProps = state => {
+  return {
+    repositories: state.repositories
+  };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-      getRepository: (id) => { dispatch(getRepository(id))}
-  }
-}
+    getRepository: id => {
+      dispatch(getRepository(id));
+    }
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home);

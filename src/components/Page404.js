@@ -7,6 +7,7 @@ const Main = styled.div`
     height: calc(100vh - 100px);
     align-items: center;
     justify-content: center;
+    margin: 0px 10px;
     h1{
         margin: 0;
         font-size: 5em;
