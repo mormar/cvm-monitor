@@ -50,12 +50,6 @@ const Box = styled.div`
     ${roboto};
     padding: 10px 15px;
   }
-  .table-subtitle {
-    font-size: 1em;
-    font-weight: 600;
-    ${roboto};
-    background: ${athensGrey};
-  }
   .tabel-details {
     display: none;
   }
@@ -64,6 +58,48 @@ const Box = styled.div`
     justify-content: space-between;
     align-items: center;
   }
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .card:nth-child(odd){
+    margin-right: 10px;
+  }
+  .card-title {
+    font-size: 1em;
+    font-weight: 600;
+    ${roboto};
+    padding: 10px 0px;
+  }
+  .card {
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    background: ${grey};
+    flex: 1 1 auto;
+  }
+  .img {
+    padding: 2em;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+  }
+  .content {
+    background: ${athensGrey};
+    width: 100%;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    ${roboto};
+  }
+  .details {
+    padding: 10px 0px;
+    &.revision {
+      font-weight: 600;
+    }
+  }
+  .revision {
+    font-weight: normal;
+  }
 `;
 
 const Title = styled.div`
@@ -71,6 +107,14 @@ const Title = styled.div`
   color: ${black};
   font-size: 2.75em;
   font-weight: 500;
+  ${roboto};
+`;
+
+const Subtitle = styled.div`
+  padding: 0px 15px 20px;
+  color: ${black};
+  font-size: 1.25em;
+  font-weight: 600;
   ${roboto};
 `;
 
@@ -214,68 +258,49 @@ class Details extends Component {
               </tr>
             </tbody>
           </table>
+          <Subtitle>Stratum 1</Subtitle>
+          <div className="grid">
+            {repositoryData.recommendedStratum1s.map(stratumOne => (
+              <div key={stratumOne.id} className="card">
+                <div className="img">
+                  {stratumOne.health === "green" ? (
+                    <FontAwesomeIcon icon={faCheck} style={{ color: green }} />
+                  ) : stratumOne.health === "red" ? (
+                    <FontAwesomeIcon icon={faTimes} style={{ color: red }} />
+                  ) : (
+                    <FontAwesomeIcon icon={faMinus} style={{ color: brown }} />
+                  )}
+                </div>
 
-          {repositoryData.recommendedStratum1s.map(stratumOne => (
-            <table key={stratumOne.id}>
-              <thead>
-                <tr>
-                  <th className="table-title" colSpan="2">
-                    Stratum 1
-                  </th>
-                </tr>
-              </thead>
-              <thead>
-                <tr>
-                  <th className="table-subtitle" colSpan="2">
+                <div className="content">
+                  <div className="card-title">
                     {stratumOne.hasOwnProperty("name")
                       ? stratumOne.name
                       : "lack of data"}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Revision</td>
-                  <td>
+                  </div>
+                  <div className="details revision">
+                    <span className="revision">Revision: </span>
                     {stratumOne.hasOwnProperty("revision")
                       ? stratumOne.revision
-                      : "lack of data"}{" "}
+                      : "Revision: lack of data"}
+                  </div>
+                  <div className="details">
                     {stratumOne.hasOwnProperty("publishedTimestamp")
-                      ? moment
+                      ? "Last Modified: " +
+                        moment
                           .unix(stratumOne.publishedTimestamp)
                           .format("Do MMMM YYYY h:mm:ss a")
-                      : "lack of data"}
-                  </td>
-                </tr>
-                <tr>
-                  <td>URL</td>
-                  <td>
+                      : "Last Modified: lack of data"}
+                  </div>
+                  <div className="details">
                     {stratumOne.hasOwnProperty("url")
                       ? stratumOne.url
                       : "lack of data"}
-                  </td>
-                </tr>
-                <tr>
-                  <td>Status</td>
-                  <td>
-                    {stratumOne.health === "green" ? (
-                      <FontAwesomeIcon
-                        icon={faCheck}
-                        style={{ color: green }}
-                      />
-                    ) : stratumOne.health === "red" ? (
-                      <FontAwesomeIcon icon={faTimes} style={{ color: red }} />
-                    ) : (
-                      <FontAwesomeIcon
-                        icon={faMinus}
-                        style={{ color: brown }}
-                      />
-                    )}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </Box>
       );
     }
