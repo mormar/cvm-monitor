@@ -17,6 +17,7 @@ import { faTimes, faCheck, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import moment from "moment";
+import { Button } from "../elements";
 
 const Box = styled.div`
   max-width: 1200px;
@@ -55,6 +56,14 @@ const Box = styled.div`
     ${roboto};
     background: ${athensGrey};
   }
+  .tabel-details {
+    display: none;
+  }
+  .two-tab-elem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 `;
 
 const Title = styled.div`
@@ -71,7 +80,8 @@ class Details extends Component {
     this.state = {
       repositoryData: null,
       isLoading: false,
-      error: null
+      error: null,
+      details: false
     };
   }
 
@@ -85,14 +95,20 @@ class Details extends Component {
       .catch(error => this.setState({ error, isLoading: false }));
   }
 
+  // handleClick = () => {
+  //   this.props.getRepository(this.props.getRepository.id);
+  // };
+
   handleClick = () => {
-    this.props.getRepository(this.props.getRepository.id);
+    this.setState(state => ({
+      details: !state.details
+    }));
   };
 
   render() {
     // console.log(this.props);
     const { repository } = this.props;
-    const { repositoryData, error } = this.state;
+    const { repositoryData, error, details } = this.state;
 
     if (error) {
       return <p>{error.message}</p>;
@@ -150,7 +166,48 @@ class Details extends Component {
               <tr>
                 <td>Whitelist Expiry Date</td>
                 {repositoryData.hasOwnProperty("whitelistExpiryDate") ? (
-                  <td>{repositoryData.whitelistExpiryDate}</td>
+                  <td className="two-tab-elem">
+                    {repositoryData.whitelistExpiryDate}
+                    <Button modifiers={["more"]} onClick={this.handleClick}>
+                      {details ? "Less details" : "More details"}
+                    </Button>
+                  </td>
+                ) : (
+                  <td>lack of data</td>
+                )}
+              </tr>
+
+              <tr className={details ? "" : "tabel-details"}>
+                <td>Url</td>
+                {repositoryData.hasOwnProperty("url") ? (
+                  <td>{repositoryData.url}</td>
+                ) : (
+                  <td>lack of data</td>
+                )}
+              </tr>
+
+              <tr className={details ? "" : "tabel-details"}>
+                <td>Contact</td>
+                {repositoryData.hasOwnProperty("email") ? (
+                  <td>{repositoryData.email}</td>
+                ) : (
+                  <td>lack of data</td>
+                )}
+              </tr>
+
+              <tr className={details ? "" : "tabel-details"}>
+                <td>rootHash</td>
+                {repositoryData.hasOwnProperty("rootHash") ? (
+                  <td>{repositoryData.rootHash}</td>
+                ) : (
+                  <td>lack of data</td>
+                )}
+              </tr>
+
+              <tr className={details ? "" : "tabel-details"}>
+                <td>rootHash</td>
+                {repositoryData.hasOwnProperty("hashAlgorithm") ? (
+                  <td>{repositoryData.hashAlgorithm}</td>
                 ) : (
                   <td>lack of data</td>
                 )}
