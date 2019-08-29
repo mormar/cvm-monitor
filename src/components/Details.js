@@ -184,11 +184,21 @@ class Details extends Component {
   componentDidMount() {
     this.setState({ isLoading: true });
     axios
-      .get("api/")
-      .then(result =>
-        this.setState({ repositoryData: result.data, isLoading: false })
-      )
-      .catch(error => this.setState({ error, isLoading: false }));
+      .get("/api/details", {
+        params: {
+          name: this.props.repository.url,
+          website: this.props.repository.repositoryWebsite
+        }
+      })
+      .then(result => {
+        console.log(`statusCode: ${result.statusCode}`);
+        console.log(result);
+        this.setState({ repositoryData: result.data, isLoading: false });
+      })
+      .catch(error => {
+        console.log(error);
+        this.setState({ error: true});
+      });
   }
 
   // handleClick = () => {
