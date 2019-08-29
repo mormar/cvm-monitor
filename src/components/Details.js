@@ -139,6 +139,14 @@ const Box = styled.div`
   }
 `;
 
+const Page = styled.div`
+    display: flex;
+    height: calc(100vh - 94px);
+    align-items: center;
+    justify-content: center;
+    margin: 0px 10px;
+`;
+
 const Title = styled.div`
   padding-top: 20px;
   color: ${black};
@@ -148,6 +156,10 @@ const Title = styled.div`
   ${above.phone`
     font-size: 2.75em;
   `}
+  &.page404 {
+    padding-top: 0px; 
+    font-size: 10em;
+  }
 `;
 
 const Subtitle = styled.div`
@@ -195,11 +207,19 @@ class Details extends Component {
     const { repositoryData, error, details } = this.state;
 
     if (error) {
-      return <p>{error.message}</p>;
+      return (
+        <Page>
+          <Title className="page404">404</Title>
+        </Page>
+      );
     }
 
     if (this.state.repositoryData === null) {
-      return <p>Loading ...</p>;
+      return (
+        <Page>
+          <Title>Loading ...</Title>
+        </Page>
+      );
     } else {
       return (
         <Box>
