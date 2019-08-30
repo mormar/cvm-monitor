@@ -9,18 +9,20 @@ import {
   roboto,
   green,
   red,
-  brown,
+  yellow,
   above,
-  white
+  white,
+  gray
 } from "../utilities";
 import { getRepository } from "../actions/getRepository";
 import { connect } from "react-redux";
 import {
   faTimes,
   faCheck,
-  faMinus,
   faAngleDown,
-  faAngleUp
+  faAngleUp,
+  faExclamationTriangle,
+  faSpinner
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
@@ -118,7 +120,6 @@ const Box = styled.div`
     border-bottom-left-radius: 20px;
   }
   .content {
-    background: ${athensGrey};
     width: 100%;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
@@ -140,11 +141,11 @@ const Box = styled.div`
 `;
 
 const Page = styled.div`
-    display: flex;
-    height: calc(100vh - 94px);
-    align-items: center;
-    justify-content: center;
-    margin: 0px 10px;
+  display: flex;
+  height: calc(100vh - 94px);
+  align-items: center;
+  justify-content: center;
+  margin: 0px 10px;
 `;
 
 const Title = styled.div`
@@ -157,7 +158,7 @@ const Title = styled.div`
     font-size: 2.75em;
   `}
   &.page404 {
-    padding-top: 0px; 
+    padding-top: 0px;
     font-size: 10em;
   }
 `;
@@ -191,13 +192,13 @@ class Details extends Component {
         }
       })
       .then(result => {
-        console.log(`statusCode: ${result.statusCode}`);
+        console.log(`statusCode: ${result.status}`);
         console.log(result);
         this.setState({ repositoryData: result.data, isLoading: false });
       })
       .catch(error => {
         console.log(error);
-        this.setState({ error: true});
+        this.setState({ error: true });
       });
   }
 
@@ -227,7 +228,12 @@ class Details extends Component {
     if (this.state.repositoryData === null) {
       return (
         <Page>
-          <Title>Loading ...</Title>
+          <FontAwesomeIcon
+            icon={faSpinner}
+            style={{ color: gray }}
+            size="6x"
+            className="fa-spin"
+          />
         </Page>
       );
     } else {
@@ -345,11 +351,23 @@ class Details extends Component {
               <div key={stratumOne.id} className="card">
                 <div className="img">
                   {stratumOne.health === "green" ? (
-                    <FontAwesomeIcon icon={faCheck} style={{ color: green }} />
+                    <FontAwesomeIcon
+                      icon={faCheck}
+                      style={{ color: green, padding: "2px" }}
+                      size="2x"
+                    />
                   ) : stratumOne.health === "red" ? (
-                    <FontAwesomeIcon icon={faTimes} style={{ color: red }} />
+                    <FontAwesomeIcon
+                      icon={faTimes}
+                      style={{ color: red, padding: "7px" }}
+                      size="2x"
+                    />
                   ) : (
-                    <FontAwesomeIcon icon={faMinus} style={{ color: brown }} />
+                    <FontAwesomeIcon
+                      icon={faExclamationTriangle}
+                      style={{ color: yellow }}
+                      size="2x"
+                    />
                   )}
                 </div>
 
