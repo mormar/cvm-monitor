@@ -11,3 +11,4 @@ export const border = "#707070";
 export const green = "#53A136";
 export const red = "#F10000";
 export const brown = "#9F6000";
+export const yellow = "#FFCE0B";
