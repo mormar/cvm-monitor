@@ -29,6 +29,7 @@ export default styled(Header)`
   ${roboto};
   ${fixed()};
   ${shadows[2]};
+  z-index: 9999;
   .logo {
     width: 36px;
   }

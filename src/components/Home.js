@@ -8,7 +8,7 @@ import { getRepository } from "../actions/getRepository";
 
 const Main = styled.div`
   max-width: 1200px;
-  min-height: calc(100vh - 114px);
+  min-height: calc(100vh - 94px);
   margin: 0px 10px;
   ${above.desktop`
     margin: 0 auto;

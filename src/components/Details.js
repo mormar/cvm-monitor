@@ -85,6 +85,10 @@ const Box = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 12px 5px;
+    ${above.phone`
+      padding: 10px 15px;
+    `}
   }
   .grid {
     ${above.tablet`
