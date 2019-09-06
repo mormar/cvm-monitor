@@ -143,6 +143,20 @@ const Box = styled.div`
   .revision {
     font-weight: normal;
   }
+  .link {
+    color: ${black};
+    display: inline-block;
+    width: 250px;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    ${above.phone`
+    width: 370px;
+    `}
+    ${above.tablet`
+    width: 100%;
+    `}
+  }
 `;
 
 const Page = styled.div`
@@ -341,9 +355,77 @@ class Details extends Component {
               </tr>
 
               <tr className={details ? "" : "tabel-details"}>
-                <td>rootHash</td>
-                {repositoryData.hasOwnProperty("hashAlgorithm") ? (
-                  <td>{repositoryData.hashAlgorithm}</td>
+                <td>Catalog</td>
+                {repositoryData.download.hasOwnProperty("catalog") ? (
+                  <td>
+                    <a
+                      href={repositoryData.download.catalog}
+                      className={"link"}
+                    >
+                      {repositoryData.download.catalog}
+                    </a>
+                  </td>
+                ) : (
+                  <td>lack of data</td>
+                )}
+              </tr>
+
+              <tr className={details ? "" : "tabel-details"}>
+                <td>Certificate</td>
+                {repositoryData.download.hasOwnProperty("certificate") ? (
+                  <td>
+                    <a
+                      href={repositoryData.download.certificate}
+                      className={"link"}
+                    >
+                      {repositoryData.download.certificate}
+                    </a>
+                  </td>
+                ) : (
+                  <td>lack of data</td>
+                )}
+              </tr>
+              <tr className={details ? "" : "tabel-details"}>
+                <td>Manifest</td>
+                {repositoryData.download.hasOwnProperty("manifest") ? (
+                  <td>
+                    <a
+                      href={repositoryData.download.manifest}
+                      className={"link"}
+                    >
+                      {repositoryData.download.manifest}
+                    </a>
+                  </td>
+                ) : (
+                  <td>lack of data</td>
+                )}
+              </tr>
+              <tr className={details ? "" : "tabel-details"}>
+                <td>Metainfo</td>
+                {repositoryData.download.hasOwnProperty("metainfo") ? (
+                  <td>
+                    <a
+                      href={repositoryData.download.metainfo}
+                      className={"link"}
+                    >
+                      {repositoryData.download.metainfo}
+                    </a>
+                  </td>
+                ) : (
+                  <td>lack of data</td>
+                )}
+              </tr>
+              <tr className={details ? "" : "tabel-details"}>
+                <td>Whitelist</td>
+                {repositoryData.download.hasOwnProperty("whitelist") ? (
+                  <td>
+                    <a
+                      href={repositoryData.download.whitelist}
+                      className={"link"}
+                    >
+                      {repositoryData.download.whitelist}
+                    </a>
+                  </td>
                 ) : (
                   <td>lack of data</td>
                 )}
