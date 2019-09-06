@@ -28,6 +28,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import moment from "moment";
 import { Button } from "../elements";
+import MapComponent from "../components/MapComponent";
 
 const Box = styled.div`
   max-width: 1200px;
@@ -491,6 +492,7 @@ class Details extends Component {
               </div>
             ))}
           </div>
+          <MapComponent repositoryData={repositoryData} />
         </Box>
       );
     }
