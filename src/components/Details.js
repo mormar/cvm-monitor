@@ -57,7 +57,7 @@ const Box = styled.div`
     padding: 10px 5px;
     font-size: 0.75em;
     ${above.phone`
-      padding: 10px 15px;
+      padding: 10px 12px;
       font-size: 1em;
     `}
   }
@@ -94,7 +94,12 @@ const Box = styled.div`
   }
   .card:nth-child(odd) {
     ${above.tablet`
-      margin-right: 10px;
+      margin-right: 5px;
+    `}
+  }
+  .card:nth-child(even) {
+    ${above.tablet`
+      margin-left: 5px;
     `}
   }
   .card-title {
@@ -109,7 +114,7 @@ const Box = styled.div`
     border-radius: 20px;
     margin-bottom: 10px;
     background: ${grey};
-    flex: 1 1 auto;
+    flex: 1 1 calc(50% - 10px);
   }
   .img {
     padding: 1.5em;
