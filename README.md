@@ -7,10 +7,6 @@ CernVM-FS is implemented as a globally distributed file system. [more](https://c
 Like any large distributed system, CernVM-FS needs some health monitoring.An important information is whether all the stratum 1
 replica servers are up-to-date and serve the latest copy of the scientific software stacks.
 
-## Motivation 
-The goal of this project is creating web application to monitoring large distributed system. Conecting web application
-with node.js [backend server](https://github.com/cvmfs-contrib/cvmfs-emscripten/tree/feature-node). 
-
 ## How to run the project in development mode:
 * You have to „Clone or download” this project.
 * install all project dependencies with `npm install`
@@ -18,7 +14,7 @@ with node.js [backend server](https://github.com/cvmfs-contrib/cvmfs-emscripten/
 
 ## How to run the project in production mode: 
 * `npm run build`
-* `serve -s build -l 3000`
+* Port can be adjusted using the -l or --listen flags `serve -s build -l 3000`
 
 ## License
 This project is licensed under the BSD-3-Clause License.
