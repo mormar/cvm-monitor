@@ -56,7 +56,10 @@ const Box = styled.div`
     background: ${grey};
     ${roboto};
     padding: 10px 5px;
-    font-size: 0.75em;
+    font-size: 0.6em;
+    ${above.smallPhone`
+      font-size: 0.75em;
+    `}
     ${above.phone`
       padding: 10px 12px;
       font-size: 1em;
@@ -108,10 +111,16 @@ const Box = styled.div`
     `}
   }
   .card-title {
-    font-size: 1em;
+    font-size: 0.9em;
     font-weight: 600;
     ${roboto};
-    padding: 10px 0px;
+    padding: 7px 0px;
+    ${above.smallPhone`
+      font-size: 1em;
+    `}
+    ${above.phone`
+      padding: 10px 0px;
+    `}
   }
   .card {
     display: flex;
@@ -122,12 +131,13 @@ const Box = styled.div`
     flex: 1 1 calc(50% - 10px);
   }
   .img {
-    padding: 1.5em;
+    padding: 1em;
+    ${above.smallPhone`
+      padding: 1.5em;
+    `}
     ${above.tablet`
       padding: 2em;
     `}
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
   }
   .content {
     width: 100%;
@@ -136,10 +146,14 @@ const Box = styled.div`
     ${roboto};
   }
   .details {
-    padding: 10px 0px;
-    font-size: 0.75em;
+    padding: 7px 0px;
+    font-size: 0.65em;
+    ${above.smallPhone`
+      font-size: 0.75em;
+    `}
     ${above.phone`
       font-size: 1em;
+      padding: 10px 0px;
     `}
     &.revision {
       font-weight: 600;
@@ -151,12 +165,15 @@ const Box = styled.div`
   .link {
     color: ${black};
     display: inline-block;
-    width: 250px;
+    width: 210px;
     white-space: nowrap;
     overflow: hidden !important;
     text-overflow: ellipsis;
+    ${above.smallPhone`
+      width: 250px;
+    `}
     ${above.phone`
-    width: 370px;
+      width: 370px;
     `}
     ${above.tablet`
     width: 100%;
@@ -175,15 +192,21 @@ const Page = styled.div`
 const Title = styled.div`
   padding-top: 20px;
   color: ${black};
-  font-size: 2em;
+  font-size: 1.75em;
   font-weight: 500;
   ${roboto};
+  ${above.smallPhone`
+    font-size: 2em;
+  `}
   ${above.phone`
     font-size: 2.75em;
   `}
   &.page404 {
     padding-top: 0px;
-    font-size: 10em;
+    font-size: 7.5em;
+    ${above.phone`
+      font-size: 10em;
+    `}
   }
 `;
 
@@ -216,8 +239,6 @@ class Details extends Component {
         }
       })
       .then(result => {
-        console.log(`statusCode: ${result.status}`);
-        console.log(result);
         this.setState({ repositoryData: result.data, isLoading: false });
       })
       .catch(error => {

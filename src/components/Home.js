@@ -15,9 +15,16 @@ const Main = styled.div`
   `}
   .repository-name {
     color: ${black}
-    font-size: 1.25em;
-    line-height: 1.25em;
+    font-size: 0.9em;
+    line-height: 1em;
     text-decoration: none;
+    ${above.smallPhone`
+      font-size: 1em;
+      line-height: 1.25em;
+    `}
+    ${above.phone`
+      font-size: 1.25em;
+    `}
   }
   .list {
     margin: 20px 0px;
@@ -27,8 +34,11 @@ const Main = styled.div`
 const Title = styled.div`
   padding: 20px 0px;
   color: ${black};
-  font-size: 2em;
+  font-size: 1.75em;
   font-weight: 500;
+  ${above.smallPhone`
+    font-size: 2em;
+  `}
   ${above.phone`
     font-size: 2.75em;
   `}
