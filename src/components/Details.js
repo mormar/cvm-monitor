@@ -234,8 +234,8 @@ class Details extends Component {
     axios
       .get("/api/details", {
         params: {
-          name: this.props.repository.url,
-          website: this.props.repository.repositoryWebsite
+          name: this.props.repository !== undefined ? this.props.repository.url : this.setState({ error: true }), 
+          website: this.props.repository !== undefined ? this.props.repository.repositoryWebsite : this.setState({ error: true })
         }
       })
       .then(result => {
