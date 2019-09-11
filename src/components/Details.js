@@ -247,10 +247,6 @@ class Details extends Component {
       });
   }
 
-  // handleClick = () => {
-  //   this.props.getRepository(this.props.getRepository.id);
-  // };
-
   handleClick = () => {
     this.setState(state => ({
       details: !state.details
@@ -258,7 +254,6 @@ class Details extends Component {
   };
 
   render() {
-    // console.log(this.props);
     const { repository } = this.props;
     const { repositoryData, error, details } = this.state;
 
@@ -334,7 +329,6 @@ class Details extends Component {
                   <td className="two-tab-elem">
                     {repositoryData.whitelistExpiryDate}
                     <Button modifiers={["more"]} onClick={this.handleClick}>
-                      {/* {details ? "Less details" : "More details"} */}
                       {details ? (
                         <FontAwesomeIcon
                           icon={faAngleUp}
