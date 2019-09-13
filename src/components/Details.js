@@ -245,7 +245,12 @@ class Details extends Component {
         }
       })
       .then(result => {
-        this.setState({ repositoryData: result.data, isLoading: false });
+        const repositoryDownloadData = result.data;
+        const certificateBlob = new Blob([result.data.download.certificate], {type: 'application/x-pem-file'});
+        const metinfoBlob = new Blob([result.data.download.metainfo], {type: 'text/json'});
+        repositoryDownloadData.download.certificate = window.URL.createObjectURL(certificateBlob);
+        repositoryDownloadData.download.metainfo = window.URL.createObjectURL(metinfoBlob);
+        this.setState({ repositoryData: repositoryDownloadData, isLoading: false });
       })
       .catch(error => {
         console.log(error);
@@ -403,8 +408,9 @@ class Details extends Component {
                     <a
                       href={repositoryData.download.certificate}
                       className={"link"}
+                      download="certificate.pem"
                     >
-                      {repositoryData.download.certificate}
+                      Download
                     </a>
                   </td>
                 ) : (
@@ -433,8 +439,9 @@ class Details extends Component {
                     <a
                       href={repositoryData.download.metainfo}
                       className={"link"}
+                      download="metainfo.json"
                     >
-                      {repositoryData.download.metainfo}
+                      Download
                     </a>
                   </td>
                 ) : (
