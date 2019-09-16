@@ -6,6 +6,7 @@ import Home from "./components/Home";
 import Page404 from "./components/Page404";
 import Details from "./components/Details";
 import Footer from "./layouts/Footer";
+require("dotenv").config();
 
 function App() {
   return (

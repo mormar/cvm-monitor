@@ -232,7 +232,7 @@ class Details extends Component {
   componentDidMount() {
     this.setState({ isLoading: true });
     axios
-      .get("http://geantbuild:5000/api/details", {
+      .get(process.env.REACT_APP_PRODUCTION_API, {
         params: {
           name:
             this.props.repository !== undefined
