@@ -46,6 +46,10 @@ const Title = styled.div`
 
 class Home extends Component {
   state = { search: "" };
+  
+  componentDidMount() {
+    window.scrollTo(0, 0)
+  }
 
   handleChange = event => {
     this.setState({ search: event.target.value });
