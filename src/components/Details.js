@@ -93,6 +93,10 @@ const Box = styled.div`
     ${above.phone`
       padding: 10px 15px;
     `}
+    &.error {
+      color: ${red};
+      font-weight: 600;
+    }
   }
   .grid {
     ${above.tablet`
@@ -337,7 +341,7 @@ class Details extends Component {
               <tr>
                 <td>Whitelist Expiry Date</td>
                 {repositoryData.hasOwnProperty("whitelistExpiryDate") ? (
-                  <td className="two-tab-elem">
+                  <td className={repositoryData.expiryDate ? "two-tab-elem" : "two-tab-elem error"}>
                     {repositoryData.whitelistExpiryDate}
                     <Button modifiers={["more"]} onClick={this.handleClick}>
                       {details ? (
