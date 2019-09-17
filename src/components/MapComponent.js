@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { Map, TileLayer, Marker, Tooltip } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import { above } from "../utilities";
 import L from "leaflet";
 delete L.Icon.Default.prototype._getIconUrl;
+
 
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
@@ -13,6 +15,16 @@ L.Icon.Default.mergeOptions({
 
 const MapBox = styled.div`
   margin: 20px 0px;
+  .map{
+    height: 340px;
+    width: 100%;
+    ${above.smallPhone`
+      height: 380px;
+    `}
+    ${above.phone`
+      height: 480px
+    `}
+  }
 `;
 
 class MapComponent extends Component {
@@ -20,7 +32,7 @@ class MapComponent extends Component {
     return (
       <MapBox>
         <Map
-          style={{ height: "480px", width: "100%" }}
+          className="map"
           zoom={1.5}
           center={[20, 0]}
         >
