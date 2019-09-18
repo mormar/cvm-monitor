@@ -191,6 +191,7 @@ const Page = styled.div`
   align-items: center;
   justify-content: center;
   margin: 0px 10px;
+  flex-direction: column;
 `;
 
 const Title = styled.div`
@@ -222,6 +223,19 @@ const Subtitle = styled.div`
   ${roboto};
 `;
 
+const ErrorTitle = styled.div`
+  ${roboto};
+  color: ${black};
+  font-size: 0.65em;
+  text-align: center;
+  ${above.smallPhone`
+    font-size: 0.75em;
+  `}
+  ${above.phone`
+      font-size: 1.25em;
+  `}
+`
+
 class Details extends Component {
   constructor(props) {
     super(props);
@@ -229,7 +243,8 @@ class Details extends Component {
       repositoryData: null,
       isLoading: false,
       error: null,
-      details: false
+      details: false,
+      errorMessage: null 
     };
   }
 
@@ -255,10 +270,11 @@ class Details extends Component {
         repositoryDownloadData.download.certificate = window.URL.createObjectURL(certificateBlob);
         repositoryDownloadData.download.metainfo = window.URL.createObjectURL(metinfoBlob);
         this.setState({ repositoryData: repositoryDownloadData, isLoading: false });
+        // console.log(result)
       })
       .catch(error => {
-        console.log(error);
         this.setState({ error: true });
+        this.setState({ errorMessage: error.response.data});
       });
   }
 
@@ -270,12 +286,13 @@ class Details extends Component {
 
   render() {
     const { repository } = this.props;
-    const { repositoryData, error, details } = this.state;
+    const { repositoryData, error, details, errorMessage } = this.state;
 
     if (error) {
       return (
         <Page>
           <Title className="page404">404</Title>
+          <ErrorTitle>{errorMessage}</ErrorTitle>
         </Page>
       );
     }
