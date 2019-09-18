@@ -10,6 +10,7 @@ replica servers are up-to-date and serve the latest copy of the scientific softw
 ## How to run the project in development mode:
 * You have to „Clone or download” this project.
 * install all project dependencies with `npm install`
+* create a .env file in the root directory with variable from example.env
 * start the development server with `npm start`
 
 ## How to run the project in production mode: 
