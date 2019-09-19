@@ -274,7 +274,7 @@ class Details extends Component {
       })
       .catch(error => {
         this.setState({ error: true });
-        this.setState({ errorMessage: error.response.data});
+        this.setState({ errorMessage: error.response !== undefined ? error.response.data : "" });
       });
   }
 
