@@ -15,6 +15,7 @@ replica servers are up-to-date and serve the latest copy of the scientific softw
 
 ## How to run the project in production mode: 
 * `npm run build`
+* If you don't have `serve` install `npm install -g serve`
 * Port can be adjusted using the -l or --listen flags `serve -s build -l 3000`
 
 ## License
